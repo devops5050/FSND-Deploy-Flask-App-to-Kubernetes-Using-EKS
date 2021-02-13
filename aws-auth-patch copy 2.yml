@@ -6,6 +6,8 @@ data:
       - system:nodes
       rolearn: arn:aws:iam::496923170277:role/eksctl-simple-jwt-api-nodegroup-n-NodeInstanceRole-1HIX2RW1CNPIP
       username: system:node:{{EC2PrivateDNSName}}
+      - rolearn: arn:aws:iam::496923170277:role/UdacityFlaskDeployCBKubectlRole
+        username: UdacityFlaskDeployCBKubectlRole
     - groups:
       - system:masters
       rolearn: arn:aws:iam::496923170277:role/UdacityFlaskDeployCBKubectlRole
@@ -15,9 +17,8 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: "2021-02-13T05:03:51Z"
-  managedFields:
   name: aws-auth
   namespace: kube-system
-  resourceVersion: "16059"
+  resourceVersion: "11495"
   selfLink: /api/v1/namespaces/kube-system/configmaps/aws-auth
   uid: 5c7d9d9a-871d-4eca-9653-3eb2e1a9ce0f
