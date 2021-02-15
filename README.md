@@ -36,3 +36,76 @@ Completing the project involves several steps:
 6. Create a CodeBuild stage which will build, test, and deploy your code
 
 For more detail about each of these steps, see the project lesson [here](https://classroom.udacity.com/nanodegrees/nd004/parts/1d842ebf-5b10-4749-9e5e-ef28fe98f173/modules/ac13842f-c841-4c1a-b284-b47899f4613d/lessons/becb2dac-c108-4143-8f6c-11b30413e28d/concepts/092cdb35-28f7-4145-b6e6-6278b8dd7527).
+
+
+History of terminal:
+
+docker pull postgres:latest
+
+docker run --name psql -e POSTGRES_PASSWORD=password! -p 5432:5432 -d postgres:latest
+
+psql -h 0.0.0.0 -p 5432 -U postgres
+
+docker ps
+
+docker stop d541cda05480
+
+docker ps
+
+aws configure list
+
+brew tap weaveworks/tap
+
+brew install weaveworks/tap/eksctl
+
+wihch eksctl
+
+eksctl -v
+
+kubectl version
+
+echo "$(<kubectl.sha256)  kubectl" | shasum -a 256 --check
+
+kubectl version --client
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+
+curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256"
+
+echo "$(<kubectl.sha256)  kubectl" | shasum -a 256 --check
+
+chmod +x ./kubectl
+
+sudo mv ./kubectl /usr/local/bin/kubectl && sudo chown root: /usr/local/bin/kubectl
+
+kubectl version --client
+
+kubectl version
+
+python3 --version
+
+git clone https://github.com/devops5050/FSND-Deploy-Flask-App-to-Kubernetes-Using-EKS.git
+
+cd FSND-Deploy-Flask-App-to-Kubernetes-Using-EKS/
+
+python3 -m virtualenv eks-env
+
+source eks-env/bin/activate
+
+pip3 install -r requirements.txt
+
+export JWT_SECRET='myjwtsecret'
+export LOG_LEVEL=DEBUG
+
+echo $JWT_SECRET 
+echo $LOG_LEVEL 
+
+python3 main.py 
+
+export TOKEN=`curl -d '{"email":"hiway@myway.com","password":"welcome"}' -H "Content-Type: application/json" -X POST localhost:80/auth  | jq -r '.token'`
+
+curl --request GET 'http://127.0.0.1:80/contents' -H "Authorization: Bearer ${TOKEN}" | jq .
+
+brew tap weaveworks/tap
+
+kubectl get nodes
