@@ -58,6 +58,18 @@ brew tap weaveworks/tap
 
 brew install weaveworks/tap/eksctl
 
+curl --silent --location "‌https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname‌ -s)_amd64.tar.gz" | tar xz -C /tmp
+
+echo $uname
+
+uname
+
+curl --silent --location https://github.com/weaveworks/eksctl/releases/download/0.37.0/eksctl_Darwin_amd64.tar.gz | tar xz -C /tmp
+
+ls -la /tmp
+
+sudo mv /tmp/eksctl /usr/local/bin
+
 wihch eksctl
 
 eksctl -v
@@ -108,4 +120,39 @@ curl --request GET 'http://127.0.0.1:80/contents' -H "Authorization: Bearer ${TO
 
 brew tap weaveworks/tap
 
+eksctl create cluster --name simple-jwt-api
 kubectl get nodes
+
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+
+echo $ACCOUNT_ID
+
+TRUST="{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\",  \"Principal\": { \"AWS\": \"arn:aws:iam::${ACCOUNT_ID}:root\" }, \"Action\":  \"sts:AssumeRole\" } ] }"
+
+echo $TRUST
+
+aws iam create-role --role-name UdacityFlaskDeployCBKubectlRole --assume-role-policy-document "$TRUST" --output text --query 'Role.Arn'
+
+aws iam create-role --role-name UdacityFlaskDeployCBKubectlRole --assume-role-policy-document "$TRUST" --output text --query 'Role.Arn'
+
+echo '{ "Version": "2012-10-17", "Statement": [ { "Effect": "Allow", "Action": [ "eks:Describe*", "ssm:GetParameters" ], "Resource": "*" } ] }' > ./iam-role-policy
+
+aws iam put-role-policy --role-name UdacityFlaskDeployCBKubectlRole --policy-name eks-describe --policy-document file://./iam-role-policy
+
+kubectl get -n kube-system configmap/aws-auth -o yaml > ./aws-auth-patch.yml
+
+kubectl patch configmap/aws-auth -n kube-system --patch "$(cat ./aws-auth-patch.yml)"
+
+Import cloudformation template in AWS portal and run the stack as per instruction
+
+After successful build, run following:
+
+kubectl get services simple-jwt-api -o wide
+
+export TOKEN=`curl -d '{"email":"<EMAIL>","password":"<PASSWORD>"}' -H "Content-Type: application/json" -X POST <EXTERNAL-IP URL>/auth  | jq -r '.token'`
+
+export TOKEN=`curl -d '{"email":"hi@bye.com","password":"welcome"}' -H "Content-Type: application/json" -X POST aaa2118561c5948619a2f0d40672a48c-25561881.us-east-1.elb.amazonaws.com/auth  | jq -r '.token'`
+
+echo $TOKEN
+
+curl --request GET 'aaa2118561c5948619a2f0d40672a48c-25561881.us-east-1.elb.amazonaws.com/contents' -H "Authorization: Bearer ${TOKEN}" | jq
